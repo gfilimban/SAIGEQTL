@@ -1748,6 +1748,7 @@ extractVarianceRatio_multiV <- function(obj.glmm.null,
             var1 <- crossprod(G, Sigma_iG) - crossprod(G, Sigma_iX) %*% solve(crossprod(X, Sigma_iX)) %*% crossprod(X, Sigma_iG)
             cat("AC ", AC, "\n")
             S <- innerProduct(G, obj.glmm.null$residuals * var_weights)
+	    S = S/tauVecNew[1]
             cat("S is ", S, "\n")
             cat("var1 is ", var1, "\n")
             p_exact <- pchisq(S^2 / var1, df = 1, lower.tail = F)
@@ -1884,14 +1885,18 @@ extractVarianceRatio_multiV <- function(obj.glmm.null,
               }
             } else if (obj.glmm.null$traitType == "quantitative") {
               var2null <- innerProduct(G, G * var_weights)
-              var2null_sample <- innerProduct(G0_sample_tilde, G0_sample_tilde * var_weights)
-              var2null_noXadj <- innerProduct(G_noXadj, G_noXadj * as.vector(crossprod(var_weights, I_mat)))
-              var2nullGE_vec <- NULL
+              #var2null_sample <- innerProduct(G0_sample_tilde, G0_sample_tilde * var_weights)
+              var2null_sample <- innerProduct(as.vector(t(var_weights) %*% I_mat), G0_sample_tilde * G0_sample_tilde)
+	      #var2null_noXadj <- innerProduct(G_noXadj, G_noXadj * as.vector(crossprod(var_weights, I_mat)))
+              var2null_noXadj <- innerProduct(as.vector(t(var_weights) %*% I_mat), G_noXadj * G_noXadj)
+	      
+	      var2nullGE_vec <- NULL
               if (!is.null(obj.glmm.null$eMat)) {
                 for (ne in 1:ncol(obj.glmm.null$eMat)) {
                   GE_tilde <- getildeMat[, ne]
                   # GE_sample_tilde = getilde_sample0_Mat[,ne]
-                  var22nullGE <- innerProduct(GE_tilde, GE_tilde * var_weights)
+                  #var22nullGE <- innerProduct(GE_tilde, GE_tilde * var_weights)
+		  var22nullGE <- innerProduct(var_weights, GE_tilde * GE_tilde)
                   # var22nullGE = innerProduct(as.vector(GE_sample_tilde), as.vector(GE_sample_tilde)*as.vector(t(var_weights) %*% I_mat))
                   var2nullGE_vec <- c(var2nullGE_vec, var22nullGE)
                 }
@@ -2268,7 +2273,7 @@ glmmkin.ai_PCG_Rcpp_multiV <- function(bedFile, bimFile, famFile, Xorig, isCovar
     #  gen_sp_Sigma_multiV(re.coef$W, tau)
     # }
 
-
+  if(fit$tau[1]!=0){
     fit <- fitglmmaiRPCG_multiV(re.coef$Y, X, re.coef$W, tau, fixtau, re.coef$Sigma_iY, re.coef$Sigma_iX, re.coef$cov, nrun, maxiterPCG, tolPCG, tol = tol, traceCVcutoff = traceCVcutoff, LOCO = FALSE)
 
     t_end_fitglmmaiRPCG <- proc.time()
@@ -2317,6 +2322,11 @@ glmmkin.ai_PCG_Rcpp_multiV <- function(bedFile, bimFile, famFile, Xorig, isCovar
         break
       }
     }
+
+    }else{#if(fit$tau[1]!=0 & fit$tau[length(fit$tau)]!=0){
+            break
+    }
+
   }
 
   if (verbose) cat("\nFinal ", tau, ":\n")
