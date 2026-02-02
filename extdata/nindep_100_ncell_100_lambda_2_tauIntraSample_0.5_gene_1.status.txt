@@ -1,0 +1,58 @@
+=== SAIGEQTL Step 1 Analysis Status ===
+Timestamp: 2026-01-29 04:33:27.962018
+SAIGEQTL Version: 0.3.4
+Convergence Status: SUCCESS
+Details: Model converged successfully. Theta sum: 0.381968
+Final Model File: /data/nindep_100_ncell_100_lambda_2_tauIntraSample_0.5_gene_1.rda
+Variance Ratio File: /data/nindep_100_ncell_100_lambda_2_tauIntraSample_0.5_gene_1.varianceRatio.txt
+
+=== Arguments Used ===
+plinkFile: /data/input/n.indep_100_n.cell_1_01.step1
+useSparseGRMtoFitNULL: FALSE
+phenoFile: /data/input/seed_1_100_nindep_100_ncell_100_lambda_2_tauIntraSample_0.5_Poisson.txt
+phenoCol: gene_1
+isRemoveZerosinPheno: FALSE
+sampleIDColinphenoFile: IND_ID
+traitType: count
+outputPrefix: /data/nindep_100_ncell_100_lambda_2_tauIntraSample_0.5_gene_1
+isCovariateOffset: FALSE
+nThreads: 1
+useSparseGRMforVarRatio: FALSE
+invNormalize: FALSE
+covarColList: X1,X2,pf1,pf2
+tol: 1e-05
+maxiter: 20
+tolPCG: 1e-05
+maxiterPCG: 500
+SPAcutoff: 2
+numMarkersForVarRatio: 30
+skipModelFitting: FALSE
+skipVarianceRatioEstimation: FALSE
+memoryChunk: 2
+tauInit: 0,0
+LOCO: TRUE
+isLowMemLOCO: FALSE
+traceCVcutoff: 0.0025
+nrun: 30
+ratioCVcutoff: 0.001
+IsOverwriteVarianceRatioFile: TRUE
+relatednessCutoff: 0
+isCateVarianceRatio: FALSE
+cateVarRatioMinMACVecExclude: 10,20.5
+cateVarRatioMaxMACVecInclude: 20.5
+isCovariateTransform: TRUE
+isDiagofKinSetAsOne: FALSE
+minMAFforGRM: 0.01
+maxMissingRateforGRM: 0.15
+minCovariateCount: -1
+includeNonautoMarkersforVarRatio: FALSE
+FemaleCode: 1
+FemaleOnly: FALSE
+MaleCode: 0
+MaleOnly: FALSE
+useGRMtoFitNULL: FALSE
+sampleCovarCol: X1,X2
+isStoreSigma: TRUE
+isShrinkModelOutput: TRUE
+isExportResiduals: FALSE
+varRatioBatchSize: 1
